@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.item_todo.view.*
 
 class TodoAdapter(
     private var todos: MutableList<Todo>,
-    private var filteredTodos: MutableList<Todo>
+    private var filteredTodos: MutableList<Todo>,
 ) : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
 
     class TodoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

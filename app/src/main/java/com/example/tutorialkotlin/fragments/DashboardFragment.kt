@@ -1,11 +1,21 @@
 package com.example.tutorialkotlin.fragments
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.SearchView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tutorialkotlin.R
+import com.example.tutorialkotlin.Todo
+import com.example.tutorialkotlin.TodoAdapter
+import kotlinx.android.synthetic.main.fragment_dashboard.*
+import kotlinx.android.synthetic.main.fragment_dashboard.view.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +31,8 @@ class DashboardFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var todoAdapter: TodoAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +47,44 @@ class DashboardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dashboard, container, false)
+        val view: View = inflater!!.inflate(R.layout.fragment_dashboard, container, false)
+//        inflater.inflate(R.layout.fragment_dashboard, container, false)
+
+        view.rvTodoItems.layoutManager = LinearLayoutManager(context)
+
+        todoAdapter = TodoAdapter(mutableListOf(), mutableListOf())
+        view.rvTodoItems.adapter = todoAdapter
+
+        view.btnAddTodo.setOnClickListener {
+            val todoTitle = etTodoTitle.text.toString()
+            if(todoTitle.isNotEmpty()){
+                val todo = Todo(todoTitle)
+                todoAdapter.addTodo(todo)
+                etTodoTitle.text.clear()
+            }
+        }
+
+        view.svSearchTodos.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(query: String): Boolean {
+                if(query.isEmpty()){
+                    todoAdapter.resetFilters()
+                }
+                todoAdapter.filterTodos(query)
+                return false
+            }
+        })
+
+        view.btnDeleteDoneTodos.setOnClickListener {
+            todoAdapter.deleteDoneTodos()
+        }
+
+
+        return view
+
     }
 
     companion object {
@@ -57,4 +106,20 @@ class DashboardFragment : Fragment() {
                 }
             }
     }
+
+//    fun onClick(v: View?) {
+//        when (v?.id) {
+//            R.id.btnAddTodo -> {
+//                val todoTitle = etTodoTitle.text.toString()
+//                if(todoTitle.isNotEmpty()){
+//                    val todo = Todo(todoTitle)
+//                    todoAdapter.addTodo(todo)
+//                    etTodoTitle.text.clear()
+//                }
+//            }
+//
+//            else -> {
+//            }
+//        }
+//    }
 }

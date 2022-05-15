@@ -3,7 +3,7 @@
     <item
         android:id="@+id/ic_dashboard"
         android:icon="@drawable/ic_dashboard"
-        android:title="Dashboard"
+        android:title="Todos"
         />
     <item
         android:id="@+id/ic_settings"
@@ -13,6 +13,6 @@
     <item
         android:id="@+id/ic_info"
         android:icon="@drawable/ic_info"
-        android:title="Info"
+        android:title="Camera"
         />
 </menu>

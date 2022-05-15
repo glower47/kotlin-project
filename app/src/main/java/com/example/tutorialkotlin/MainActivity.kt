@@ -10,6 +10,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import com.example.tutorialkotlin.fragments.DashboardFragment
 import com.example.tutorialkotlin.fragments.InfoFragment
@@ -19,20 +20,20 @@ import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var todoAdapter: TodoAdapter
 
     private val dashboardFragment = DashboardFragment();
     private val settingsFragment = SettingsFragment();
     private val infoFragment = InfoFragment();
 
+    private lateinit var todoAdapter: TodoAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        replaceFragment(settingsFragment)
-        todoAdapter = TodoAdapter(mutableListOf(), mutableListOf())
+        replaceFragment(dashboardFragment)
 
-        bottom_navigation.setOnNavigationItemSelectedListener {
+        bottom_navigation.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.ic_dashboard -> replaceFragment(dashboardFragment)
                 R.id.ic_settings -> replaceFragment(settingsFragment)
@@ -41,42 +42,6 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        rvTodoItems.adapter = todoAdapter
-        rvTodoItems.layoutManager = LinearLayoutManager(this)
-
-        btnAddTodo.setOnClickListener {
-            val todoTitle = etTodoTitle.text.toString()
-            if(todoTitle.isNotEmpty()){
-                val todo = Todo(todoTitle)
-                todoAdapter.addTodo(todo)
-                etTodoTitle.text.clear()
-            }
-        }
-
-//        fabCameraButton.setOnClickListener{
-//            val takePhotoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//            val filePhoto = getPhotoFile("photo.jpg")
-//            val providerFile = FileProvider.getUriForFile(this,"com.example.tutorialkotlin.fileprovider", filePhoto)
-//            takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, providerFile)
-//        }
-
-        svSearchTodos.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(query: String): Boolean {
-                if(query.isEmpty()){
-                    todoAdapter.resetFilters()
-                }
-                todoAdapter.filterTodos(query)
-                return false
-            }
-        })
-
-        btnDeleteDoneTodos.setOnClickListener {
-            todoAdapter.deleteDoneTodos()
-        }
     }
 
     private fun replaceFragment(fragment: Fragment){
