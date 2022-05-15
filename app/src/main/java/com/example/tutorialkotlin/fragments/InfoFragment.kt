@@ -64,6 +64,7 @@ class InfoFragment : Fragment() {
 
         if (allPermissionsGranted()) {
             startCamera()
+            imageCapture = ImageCapture.Builder().build()
         } else {
             ActivityCompat.requestPermissions(
                 requireActivity(), REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
@@ -134,6 +135,8 @@ class InfoFragment : Fragment() {
                     it.setSurfaceProvider(viewFinder.surfaceProvider)
                 }
 
+            imageCapture = ImageCapture.Builder().build()
+
             // Select back camera as a default
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
@@ -142,8 +145,9 @@ class InfoFragment : Fragment() {
                 cameraProvider.unbindAll()
 
                 // Bind use cases to camera
+
                 cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview)
+                    this, cameraSelector, preview, imageCapture)
 
             } catch(exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
@@ -181,7 +185,7 @@ class InfoFragment : Fragment() {
         view.image_capture_button.setOnClickListener { takePhoto() }
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_info, container, false)
+        return view
     }
 
     companion object {
