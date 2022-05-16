@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/ic_dashboard"
         android:icon="@drawable/ic_dashboard"
@@ -14,5 +15,12 @@
         android:id="@+id/ic_info"
         android:icon="@drawable/ic_info"
         android:title="Camera"
+        />
+    <item
+        android:id="@+id/share_menu"
+        android:icon="@drawable/ic_share"
+        android:title="Share"
+        android:iconTint="#F44336"
+        app:showAsAction="always"
         />
 </menu>

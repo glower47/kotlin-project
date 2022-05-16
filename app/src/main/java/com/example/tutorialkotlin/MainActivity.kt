@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -42,6 +44,28 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item?.itemId == R.id.share_menu){
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, "Am trimis acest text prin magia bunului Domn")
+                type = "text/plain"
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, "Da frate")
+            startActivity(shareIntent)
+        }else {
+            return super.onOptionsItemSelected(item)
+        }
+
+        return true
     }
 
     private fun replaceFragment(fragment: Fragment){
